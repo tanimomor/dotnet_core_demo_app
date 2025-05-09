@@ -4,7 +4,7 @@ namespace API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class WeatherForecastController : ControllerBase
+public class WeatherForecastController : BaseApiController
 {
     private static readonly string[] Summaries = new[]
     {
@@ -28,5 +28,11 @@ public class WeatherForecastController : ControllerBase
             Summary = Summaries[Random.Shared.Next(Summaries.Length)]
         })
         .ToArray();
+    }
+
+    [HttpGet("health")]
+    public ActionResult<string> GetHealth()
+    {
+        return "success";
     }
 }

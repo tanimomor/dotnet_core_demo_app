@@ -1,0 +1,28 @@
+using API.Data;
+using API.Entities;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+namespace API.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class UsersController(DataContext context) : BaseApiController
+{
+    [HttpGet("health")]  // GET /health/health
+    public string GetHealth() => "OK";
+    
+    [HttpGet("")]   // GET /health/users
+    public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers() {
+        var users = await context.Users.ToListAsync();
+        Console.WriteLine("Users found", users);
+        return users;
+    }
+
+    [HttpGet("{id:int}")]   // GET /health/users
+    public async Task<ActionResult<AppUser>> GetUsers(int id) {
+        var user = await context.Users.FindAsync(id);
+        if (user == null) return NotFound();
+        return user;
+    } 
+}
